@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 4000;
-const routes = require("../Router/router.js/routes.js.js.js.js");
+const routes = require("../Router/router.js/routes.js");
 
 let bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
