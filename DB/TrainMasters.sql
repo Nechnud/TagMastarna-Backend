@@ -57,7 +57,7 @@ create table journey (
 );
 
 create table Routes (
-	id int NOT NULL AUTO_INCREMENT,
+	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	startDest VARCHAR(50),
 	endDest VARCHAR(50)
 );
@@ -70,7 +70,7 @@ INSERT INTO Routes(startDest,endDest) VALUES("Helsingborg C", "Trelleborg");
 INSERT INTO Routes(startDest,endDest) VALUES("Trelleborg", "Helsingborg C");
 
 
-create table Station (
+create table PRIMARY KEY Station (
 	id int NOT NULL AUTO_INCREMENT,
 	route_id int,
 	stationName VARCHAR(50),
