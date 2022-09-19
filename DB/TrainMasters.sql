@@ -71,7 +71,7 @@ INSERT INTO Routes(startDest,endDest) VALUES("Trelleborg", "Helsingborg C");
 
 
 create table Station (
-	id int NOT NULL AUTO_INCREMENT,
+	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	route_id int,
 	stationName VARCHAR(50),
 	arrival int,
