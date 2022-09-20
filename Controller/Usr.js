@@ -1,4 +1,4 @@
-const con = require('../Db');
+const con = require('../db/Db');
 
 const getAllUsers = async (req, res) => {
     con

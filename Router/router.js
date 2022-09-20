@@ -11,10 +11,10 @@ const routes = () => {
 
   // Register route to api-layer.
   router.use("/user", user());
-  router.use("/searchJourney", searchJourney());
+  //router.use("/searchJourney", searchJourney());
 
-  router.use("/selectSeats", selectSeats());
-  router.use("/booking", booking());
+  //router.use("/selectSeats", selectSeats());
+  //router.use("/booking", booking());
 
   return router;
 };
