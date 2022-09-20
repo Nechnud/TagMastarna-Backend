@@ -1,8 +1,12 @@
+create DATABASE TrainMasters;
+
+use TrainMasters;
+
 CREATE TABLE `Usr`(
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `traveler_id` INT NOT NULL,
     `paymentMethod` VARCHAR(255) NOT NULL,
-    `password` INT NOT NULL
+    `password` VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE `Customer`(
@@ -224,3 +228,29 @@ INSERT INTO Station(route_id, stationName,arrival,departure,platform) VALUES (6,
 INSERT INTO Station(route_id, stationName,arrival,departure,platform) VALUES (6,'Rydebäck',81,81,'1');
 INSERT INTO Station(route_id, stationName,arrival,departure,platform) VALUES (6,'Ramlösa',86,86,'2');
 INSERT INTO Station(route_id, stationName,arrival,departure,platform) VALUES (6,'Helsingborg C',91,NULL,'2b');
+
+INSERT INTO locomotive() VALUES();
+INSERT INTO locomotive() VALUES();
+INSERT INTO locomotive() VALUES();
+
+INSERT INTO trainset(locomotive_id) VALUES(1);
+INSERT INTO trainset(locomotive_id) VALUES(2);
+INSERT INTO trainset(locomotive_id) VALUES(3);
+
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(1,1);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(1,2);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(1,3);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(1,2);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(1,2);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(1,4);
+
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(2,1);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(2,2);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(2,3);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(2,2);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(2,4);
+
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(3,1);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(3,2);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(3,2);
+INSERT INTO carriage(trainSet_id, carriageType) VALUES(3,4);
