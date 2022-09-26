@@ -38,6 +38,11 @@ const getAvailableJourneyDates = async (req, res) => {
 }
 
 const getRoutesForStation = async (req, res) => {
+    if (!req.query.stationName) {
+        res.status(500).json({ success: false, error: 'Incorrect parameters' });
+        return;
+    }
+
     con
         .promise()
         .query(
@@ -51,7 +56,7 @@ const getRoutesForStation = async (req, res) => {
         )
         .then(([rows, fields, err]) => {
             if (!err) {
-                return res.json(rows);
+                res.status(200).json({ success: true, data: rows });
             }
             else {
                 return res.json({ msg: err.message });
@@ -59,7 +64,7 @@ const getRoutesForStation = async (req, res) => {
         })
         .catch((err) => {
             res.status(500).json({ success: false, error: err.message });
-        })
+        });
 }
 
 module.exports = {
