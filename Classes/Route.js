@@ -1,14 +1,14 @@
 const http = require('http')
 module.exports = class Route{
-  stations = [];
+  stations;
   constructor(/*ruttid*/routeId) {
 
     this.routeID = routeId;
-    
+    this.getStationData();
   }
  getStationData(){
   http.get(
-    `http://${process.env.API_HOST}:${process.env.PORT}${process.env.API_URL}/searchJourney/getStationForRoutes/?id=${this.routeID}`,
+    `http://${process.env.API_HOST}:${process.env.PORT}${process.env.API_URL}/searchJourney/stations/${this.routeID}`,
     (resp) => {
         let data = '';
         resp.on('data', (chunk) => {
@@ -17,7 +17,7 @@ module.exports = class Route{
 
         resp.on('end', () => {
           this.stations = JSON.parse(data);
-          console.log(this.stations)
+          console.log(this.stations.data)
         });
 
         resp.on('error', (err) => {

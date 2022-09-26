@@ -1,4 +1,5 @@
 require('dotenv').config({ path: `${process.cwd()}/../.env` });
+const Route = require('./Route')
 
 module.exports = class Journey {
 
