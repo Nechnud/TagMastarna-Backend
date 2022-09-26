@@ -51,7 +51,7 @@ const getRoutesForStation = async (req, res) => {
         )
         .then(([rows, fields, err]) => {
             if (!err) {
-                return res.json(rows);
+                res.status(500).json({ success: true, data: rows });
             }
             else {
                 return res.json({ msg: err.message });
