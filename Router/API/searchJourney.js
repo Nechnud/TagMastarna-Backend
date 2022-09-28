@@ -3,7 +3,8 @@ const express = require('express');
 const {
     getRoutes,
     getAvailableJourneyDates,
-    getRoutesForStation
+    getRoutesForStation,
+    getJourneysWithoutChangeRequired
 } = require('../../Controller/Travels');
 
 const {
@@ -16,7 +17,8 @@ const routes = () => {
     router.get('/routes', getRoutes);
     router.get('/dates', getAvailableJourneyDates);
     router.get('/station', getRoutesForStation);
-    router.get('/stations/:id',getStationsForRoute)
+    router.get('/stations/:id', getStationsForRoute)
+    router.get('/', getJourneysWithoutChangeRequired);
 
     return router;
 }

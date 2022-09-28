@@ -67,8 +67,69 @@ const getRoutesForStation = async (req, res) => {
         });
 }
 
+const getJourneysWithoutChangeRequired = async (req, res) => {
+    if (!req.query.startStation || !req.query.endStation) {
+        res.status(500).json({ success: false, error: 'Incorrect parameters' });
+        return;
+    }
+    //journey.depFromFirstStationTime, (station.arrival - start_destination_data.departure)
+    //journey.depFromFirstStationTime, start_destination_data.departure
+
+    con
+        .promise()
+        .query( // add travel time field by calling the compute_journey_time function
+            `
+                WITH start_destination_data AS (
+                    SELECT id, route_id, arrival, departure, stationName
+                    FROM station
+                    WHERE stationName = ?
+                )
+                SELECT 
+                    station.id AS stationId, station.route_id, 
+                        station.stationName AS "endDestination", 
+                        station.arrival AS "endStationArrival", 
+                    journey.id AS journeyId, journey.depFromFirstStationTime, journey.trainSet_id,
+                    start_destination_data.arrival AS "startStationArrival", 
+                        start_destination_data.departure AS "startStationDeparture",
+                        start_destination_data.stationName AS "startDestination",
+                    compute_journey_time(
+                        '2022-09-22 07:00:00', 90
+                    ) AS "arrivalTime",
+                    compute_journey_time(
+                        '2022-09-22 07:00:00', 90
+                    ) AS "departureTime"
+                FROM station, journey, start_destination_data
+                WHERE station.stationName = ?
+                AND station.arrival > start_destination_data.departure
+                AND station.route_id IN (
+                    SELECT route_id
+                    FROM start_destination_data
+                )
+                AND journey.route_id IN (
+                    SELECT route_id
+                    FROM start_destination_data
+                )
+                AND start_destination_data.route_id = station.route_id
+                AND station.route_id = journey.route_id
+            `,
+            [req.query.startStation, req.query.endStation]
+        )
+        .then(([rows, fields, err]) => {
+            if (!err) {
+                res.status(200).json({ success: true, data: rows });
+            }
+            else {
+                return res.json({ msg: err.message });
+            }
+        })
+        .catch((err) => {
+            res.status(500).json({ success: false, error: err.message });
+        });
+}
+
 module.exports = {
     getRoutes,
     getAvailableJourneyDates,
-    getRoutesForStation
+    getRoutesForStation,
+    getJourneysWithoutChangeRequired
 }
