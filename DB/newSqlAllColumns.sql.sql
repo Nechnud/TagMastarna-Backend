@@ -62,7 +62,7 @@ CREATE TABLE `Ticket`(
     `booking_id` INT NOT NULL,
     `seat_id` INT NOT NULL,
     `departureTime` DATETIME NOT NULL,
-    `startStartion_id` INT NOT NULL,
+    `startStation_id` INT NOT NULL,
     `endStation_id` INT NOT NULL
 );
 
@@ -101,7 +101,7 @@ ALTER TABLE
 ALTER TABLE
     `Ticket` ADD CONSTRAINT `ticket_seat_id_foreign` FOREIGN KEY(`seat_id`) REFERENCES `Seat`(`id`);
 ALTER TABLE
-    `Ticket` ADD CONSTRAINT `ticket_startstartion_id_foreign` FOREIGN KEY(`startStartion_id`) REFERENCES `Station`(`id`);
+    `Ticket` ADD CONSTRAINT `ticket_startstartion_id_foreign` FOREIGN KEY(`startStation_id`) REFERENCES `Station`(`id`);
 ALTER TABLE
     `Ticket` ADD CONSTRAINT `ticket_endstation_id_foreign` FOREIGN KEY(`endStation_id`) REFERENCES `Station`(`id`);
 
