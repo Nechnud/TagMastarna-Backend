@@ -77,7 +77,7 @@ const getJourneysWithoutChangeRequired = async (req, res) => {
 
     con
         .promise()
-        .query( // add travel time field by calling the compute_journey_time function
+        .query(
             `
                 WITH start_destination_data AS (
                     SELECT id, route_id, arrival, departure, stationName
@@ -93,10 +93,10 @@ const getJourneysWithoutChangeRequired = async (req, res) => {
                         start_destination_data.departure AS "startStationDeparture",
                         start_destination_data.stationName AS "startDestination",
                     compute_journey_time(
-                        '2022-09-22 07:00:00', 90
+                        '2022-10-05 10:00', (station.arrival - start_destination_data.departure)
                     ) AS "arrivalTime",
                     compute_journey_time(
-                        '2022-09-22 07:00:00', 90
+                        '2022-10-05 11:00', start_destination_data.departure
                     ) AS "departureTime"
                 FROM station, journey, start_destination_data
                 WHERE station.stationName = ?

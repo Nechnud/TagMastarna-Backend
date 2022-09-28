@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "43d7b74f-4a37-4e7b-87d0-f25329b0fefb",
+		"name": "trainmasters",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19850967"
+	},
+	"item": [
+		{
+			"name": "POST user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Sam Candy\",\r\n    \"email\": \"samcandy@gmail.com\",\r\n    \"phoneNumber\": \"0710030303\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST user/user/:id",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paymentMethod\": \"American Express\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/user/user/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET user/:id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/user/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET searchJourney/routes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/searchJourney/routes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"searchJourney",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET searchJourney/dates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/searchJourney/dates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"searchJourney",
+						"dates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET searchJourney/stations/:id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/searchJourney/stations/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"searchJourney",
+						"stations",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET searchJourney/station?stationName=<>",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/searchJourney/station?stationName=Lund C",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"searchJourney",
+						"station"
+					],
+					"query": [
+						{
+							"key": "stationName",
+							"value": "Lund C"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET selectSeats/:id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/selectSeats/3500",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"selectSeats",
+						"3500"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET searchJourney/?startStation=<>&endStation=<>",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/searchJourney/?startStation=Lund C&endStation=Helsingborg C",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"searchJourney",
+						""
+					],
+					"query": [
+						{
+							"key": "startStation",
+							"value": "Lund C"
+						},
+						{
+							"key": "endStation",
+							"value": "Helsingborg C"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST booking",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerId\": 1,\r\n    \"journeyId\": 3127,\r\n    \"cancellationProtection\": \"false\",\r\n    \"travelerName\": \"Sam Candy\",\r\n    \"travelerCategory\": \"Adult\",\r\n    \"seat_id\": 347,\r\n    \"departureTime\": \"2022-10-05 09:23:00\",\r\n    \"startStationId\": 58, \r\n    \"endStationId\": 60\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/booking/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"booking",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

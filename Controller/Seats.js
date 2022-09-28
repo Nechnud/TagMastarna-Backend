@@ -5,7 +5,7 @@ const getSeatsForJourney = async (req, res) => {
         promise()
         .query(
             `
-                SELECT trainset.id, depFromFirstStationTime, handicap, seatNumber 
+                SELECT seat.id AS "seatId", trainset.id, depFromFirstStationTime, handicap, seatNumber 
                 FROM journey
                 INNER JOIN trainset
                 ON journey.trainSet_id = trainset.id
