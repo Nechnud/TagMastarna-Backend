@@ -1,13 +1,15 @@
 const express = require('express');
 
 const {
-    getSeatsForJourney
+    getSeatsForJourney,
+    getAvailableSeats
 } = require('../../Controller/Seats');
 
 const routes = () => {
     const router = express.Router();
 
     router.get('/:id', getSeatsForJourney)
+    router.get('/seats/:id', getAvailableSeats)
 
     return router;
 }

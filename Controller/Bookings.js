@@ -3,7 +3,8 @@ const con = require('../db/Db');
 const postBookingAndTickets = async (req, res) => {
     if (
         !req.body.customerId || !req.body.journeyId || !req.body.cancellationProtection ||
-        !req.body.travelerName || !req.body.travelerCategory || !req.body.seat_id ||
+        !req.body.travelers ||
+        //!req.body.travelerName || !req.body.travelerCategory || !req.body.seat_id ||
         !req.body.departureTime || !req.body.startStationId || !req.body.endStationId
     ) {
         res.status(500).json({ success: false, error: 'Incorrect parameters' });
@@ -13,8 +14,8 @@ const postBookingAndTickets = async (req, res) => {
     con.promise()
         .query(
             `
-            INSERT INTO Booking SET ? 
-        `,
+                INSERT INTO Booking SET ? 
+            `,
             {
                 customer_id: req.body.customerId,
                 journey_id: req.body.journeyId,
@@ -27,11 +28,27 @@ const postBookingAndTickets = async (req, res) => {
         )
         .then(([rows, fields, err]) => {
             if (!err) {
-                con.query(
+                req.body.travelers.map(traveler => {
+                    con.query(
+                        `
+                            INSERT INTO Ticket(
+                                travelerName, travelerCategory, booking_id, seat_id,
+                                departureTime, startStartion_id, endStation_id
+                            )
+                            VALUES(?, ?, ?, ?, ?, ?, ?)
+                        `,
+                        [
+                            traveler.travelerName, traveler.travelerCategory, rows.insertId,
+                            traveler.seatId, req.body.departureTime,
+                            req.body.startStationId, req.body.endStationId
+                        ]
+                    )
+                });
+                /* con.query(
                     `
                         INSERT INTO Ticket(
                             travelerName, travelerCategory, booking_id, seat_id,
-                            departureTime, startStartion_id, endStation_id
+                            departureTime, startStation_id, endStation_id
                         )
                         VALUES(?, ?, ?, ?, ?, ?, ?)
                     `,
@@ -40,7 +57,7 @@ const postBookingAndTickets = async (req, res) => {
                         req.body.seat_id, req.body.departureTime,
                         req.body.startStationId, req.body.endStationId
                     ]
-                )
+                ) */
 
                 res.status(200).json({ success: true, result: `Tickets inserted` });
             }
