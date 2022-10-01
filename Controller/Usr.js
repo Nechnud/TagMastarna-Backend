@@ -7,7 +7,7 @@ const getAllUsers = async (req, res) => {
         .then(([rows, fields, err]) => {
             if (!err) {
                 userList = rows;
-                return res.json(userList);
+                return res.json({ success: true, data: userList });
             } else {
                 return res.json({ msg: err.message });
             }
@@ -72,7 +72,7 @@ const getUser = async (req, res) => {
         .then(([rows, fields, err]) => {
             if (!err) {
                 userList = rows;
-                return res.json(userList);
+                return res.json({ success: true, data: userList });
             } else {
                 return res.json({ msg: err.message });
             }

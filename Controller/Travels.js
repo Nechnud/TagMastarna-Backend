@@ -7,7 +7,7 @@ const getRoutes = async (req, res) => {
         .query("SELECT * FROM Routes")
         .then(([rows, fields, err]) => {
             if (!err) {
-                return res.json(rows);
+                return res.json({ data: rows });
             }
             else {
                 return res.json({ msg: err.message });
@@ -27,7 +27,7 @@ const getAvailableJourneyDates = async (req, res) => {
         )
         .then(([rows, fields, err]) => {
             if (!err) {
-                return res.json(rows.map(x => x.dates));
+                return res.json({ success: true, data: rows.map(x => x.dates) });
             }
             else {
                 return res.json({ msg: err.message });

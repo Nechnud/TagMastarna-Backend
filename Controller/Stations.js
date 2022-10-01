@@ -7,7 +7,7 @@ const getStations = async (req, res) => {
     .then(([rows, fields, err]) => {
       if (!err) {
         stationsList = rows;
-        return res.json(stationsList);
+        return res.json({ success: true, data: stationsList });
       } else {
         return res.json({ msg: err.message });
       }
@@ -15,17 +15,17 @@ const getStations = async (req, res) => {
     .catch((err) => {
       res.status(500).json({ success: false, error: err.message });
     });
-  };
-  
-  
-  
-  const getStationsForRoute = async (req, res) => {
-    if (!req.params.id) {
-      res.status(500).json({ success: false, error: 'Incorrect parameters' });
-      return;
-    }
-    
-    con
+};
+
+
+
+const getStationsForRoute = async (req, res) => {
+  if (!req.params.id) {
+    res.status(500).json({ success: false, error: 'Incorrect parameters' });
+    return;
+  }
+
+  con
     .promise()
     .query(
       `
@@ -38,23 +38,23 @@ const getStations = async (req, res) => {
       AND routes.id = ?
       `,
       [req.params.id]
-      )
-      .then(([rows, fields, err]) => {
-        if (!err) {
-          res.status(200).json({ success: true, data: rows });
-        }
-        else {
-          return res.json({ msg: err.message });
-        }
-      })
-      .catch((err) => {
-        res.status(500).json({ success: false, error: err.message });
-      });
-    }
-    
-    
-    
-    module.exports = {
-      getStations,
-      getStationsForRoute
-    };
+    )
+    .then(([rows, fields, err]) => {
+      if (!err) {
+        res.status(200).json({ success: true, data: rows });
+      }
+      else {
+        return res.json({ msg: err.message });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ success: false, error: err.message });
+    });
+}
+
+
+
+module.exports = {
+  getStations,
+  getStationsForRoute
+};
