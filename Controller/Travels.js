@@ -126,13 +126,7 @@ const getJourneysWithoutChangeRequired = async (req, res) => {
                     start_station_data.id AS "startStationId",
                         start_station_data.arrival AS "startStationArrival", 
                         start_station_data.departure AS "startStationDeparture",
-                        start_station_data.stationName AS "startStation",
-                    compute_journey_time(
-                        '2022-09-21 07:00:00', 67
-                    ) AS "arrivalTime",
-                    compute_journey_time(
-                        '2022-09-21 07:00:00', 98
-                    ) AS "departureTime"
+                        start_station_data.stationName AS "startStation"
                 FROM station, journey, start_station_data
                 WHERE station.stationName = ?
                 AND station.arrival > start_station_data.departure
@@ -156,7 +150,7 @@ const getJourneysWithoutChangeRequired = async (req, res) => {
                     rows[0].startStationId, rows[0].startStation, rows[0].startStationDeparture,
                     rows[0].endStationId, rows[0].endDestination, rows[0].endStationArrival,
                 );
-                console.log(ticket.startStation, ticket.endDestination, ticket.departureDatetime);
+                //console.log(ticket.startStation, ticket.endDestination, ticket.departureDatetime);
 
                 res.status(200).json({ success: true, data: rows });
             }

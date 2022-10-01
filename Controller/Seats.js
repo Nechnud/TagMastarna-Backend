@@ -32,8 +32,10 @@ const getSeatsForJourney = async (req, res) => {
 
 const getAvailableSeats = async (req, res) => {
     if (
-        !req.params.id || !req.body.startStationId || !req.body.endStationId ||
-        !req.body.startStationDeparture || !req.body.endStationArrival
+        //!req.params.id || !req.body.startStationId || !req.body.endStationId ||
+        //!req.body.startStationDeparture || !req.body.endStationArrival
+        //!req.params.startStationDeparture || !req.params.endStationArrival ||
+        !req.params.id || !req.query.departure || !req.query.arrival
     ) {
         res.status(200).json({ success: false, error: 'Incorrect parameters' });
         return;
@@ -101,13 +103,20 @@ const getAvailableSeats = async (req, res) => {
             [
                 req.params.id, req.params.id,
                 req.params.id, req.params.id,
-                req.body.startStationDeparture,
+                /* req.body.startStationDeparture,
                 req.body.endStationArrival,
                 req.body.startStationDeparture,
                 req.body.endStationArrival,
                 req.body.endStationArrival,
                 req.body.startStationDeparture,
-                req.body.endStationArrival,
+                req.body.endStationArrival, */
+                req.query.departure,
+                req.query.arrival,
+                req.query.departure,
+                req.query.arrival,
+                req.query.arrival,
+                req.query.departure,
+                req.query.arrival
             ]
         )
         .then(([rows, fields, err]) => {
