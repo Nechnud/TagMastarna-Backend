@@ -11,7 +11,8 @@ const getAllUsers = async (req, res) => {
             } else {
                 return res.json({ msg: err.message });
             }
-        }).catch((err) => {
+        })
+        .catch((err) => {
             res.status(500).json({ success: false, error: err.message });
         });
 }
@@ -76,14 +77,48 @@ const getUser = async (req, res) => {
             } else {
                 return res.json({ msg: err.message });
             }
-        }).catch((err) => {
-            console.log('error');
+        })
+        .catch((err) => {
+            console.log(err.message);
         });
 }
+
+const userLogin = (req, res) => {
+    if (!req.body.email || !req.body.password) {
+        res.status(500).json({ success: false, error: err.message });
+        return;
+    }
+
+    con
+        .promise()
+        .query(
+            `
+                SELECT * 
+                FROM Usr, customer 
+                WHERE customer.id = Usr.traveler_id
+                AND customer.email = ?
+                AND Usr.password = ?
+            `,
+            [req.body.email, req.body.password]
+        )
+        .then(([rows, fields, err]) => {
+            if (!err) {
+                return res.json({ success: true, data: rows });
+            }
+            else {
+                return res.json({ success: false, error: 'Login failed.' });
+            }
+        })
+        .catch((err) => {
+            console.log(err.message);
+        });
+}
+
 
 module.exports = {
     getAllUsers,
     postCustomer,
     postUser,
-    getUser
+    getUser,
+    userLogin
 }

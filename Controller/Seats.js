@@ -78,7 +78,9 @@ const getAvailableSeats = async (req, res) => {
                 ),
                 seats_free AS(
                     SELECT DISTINCT journey.id AS journeyId, journey.route_id,
-                        seat.id AS "seatId", trainset.id AS trainsetId, carriage.id AS carriageId
+                        seat.id AS "seatId", seat.seatNumber, seat.handicap, 
+                        trainset.id AS trainsetId, 
+                        carriage.id AS carriageId
                     FROM journey, trainset, carriage, seat
                     WHERE journey.id = ?
                     AND trainset.id = journey.trainSet_id
@@ -121,7 +123,11 @@ const getAvailableSeats = async (req, res) => {
         )
         .then(([rows, fields, err]) => {
             if (!err) {
-                return res.json({ success: true, data: rows });
+                data = {
+                    numOfFreeSeats: rows.length,
+                    seats: rows
+                };
+                return res.json({ success: true, data: data });
             }
             else {
                 return res.json({ success: false, error: err.message });

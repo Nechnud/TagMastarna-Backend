@@ -3,11 +3,11 @@ const con = require("../db/Db");
 const getStations = async (req, res) => {
   con
     .promise()
-    .query("SELECT * FROM Station")
+    .query("SELECT stationName FROM Station")
     .then(([rows, fields, err]) => {
       if (!err) {
         stationsList = rows;
-        return res.json({ success: true, data: stationsList });
+        return res.json({ success: true, data: stationsList.map(x => x.stationName) });
       } else {
         return res.json({ msg: err.message });
       }

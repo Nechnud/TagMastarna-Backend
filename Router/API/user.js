@@ -4,7 +4,8 @@ const {
     getAllUsers,
     postCustomer,
     postUser,
-    getUser
+    getUser,
+    userLogin
 } = require('../../Controller/Usr');
 
 const routes = () => {
@@ -14,6 +15,7 @@ const routes = () => {
     router.post('/', postCustomer);
     router.post('/user/:travelerId', postUser);
     router.get('/:id', getUser);
+    router.post('/login', userLogin);
 
     return router;
 }
