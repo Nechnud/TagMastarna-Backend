@@ -45,7 +45,9 @@ const postBookingAndTickets = async (req, res) => {
                     )
                 });
 
-                res.status(200).json({ success: true, result: `Tickets inserted` });
+                res.status(200).json(
+                    { success: true, result: `Tickets inserted`, bookingId: rows.insertId }
+                );
             }
             else {
                 res.status(500).json({ success: false, error: err });
