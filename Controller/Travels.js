@@ -1,5 +1,4 @@
 const con = require('../db/Db');
-const Ticket = require('../Classes/Ticket');
 
 const getRoutes = async (req, res) => {
     con.
@@ -113,13 +112,6 @@ const getJourneysWithoutChangeRequired = async (req, res) => {
         )
         .then(([rows, fields, err]) => {
             if (!err) {
-                /* let ticket = new Ticket(
-                    rows[0].arrivalTime, rows[0].departureTime,
-                    rows[0].startStationId, rows[0].startStation, rows[0].startStationDeparture,
-                    rows[0].endStationId, rows[0].endDestination, rows[0].endStationArrival,
-                ); */
-                //console.log(ticket.startStation, ticket.endDestination, ticket.departureDatetime);
-
                 res.status(200).json({ success: true, data: rows });
             }
             else {

@@ -26,15 +26,23 @@ const postCustomer = async (req, res) => {
     con
         .promise()
         .query(
-            "INSERT INTO Customer (name, email, phoneNumber)" +
-            "VALUES (?, ?, ?)",
+            `
+                INSERT INTO Customer (name, email, phoneNumber)
+                VALUES (?, ?, ?)
+            `,
             [req.body.name, req.body.email, req.body.phoneNumber]
         )
+        .then(([rows, fields, err]) => {
+            if (!err) {
+                res.status(200).json({
+                    success: true, result: 'Customer created', customerId: rows.insertId
+                });
+            }
+        })
         .catch((err) => {
             res.status(500).json({ success: false, error: err.message });
             return;
         });
-    res.status(200).json({ success: true, result: 'Customer created' });
 }
 
 const postUser = async (req, res) => {
@@ -58,6 +66,34 @@ const postUser = async (req, res) => {
     return;
 }
 
+const getUserIdByEmail = async (req, res) => {
+    if (!req.params.email) {
+        res.status(500).json({ success: false, error: err.message });
+        return;
+    }
+
+    con
+        .promise()
+        .query(
+            `
+                SELECT id FROM customer
+                WHERE email = ?
+            `,
+            [req.params.email]
+        )
+        .then(([rows, field, err]) => {
+            if (!err) {
+                res.status(200).json({ success: true, customerId: rows[0].id });
+            }
+            else {
+                res.status(200).json({ success: false });
+            }
+        })
+        .catch((err) => {
+            res.status(200).json({ success: false, error: err.message });
+        });
+}
+
 const getUser = async (req, res) => {
     if (!req.params.id) {
         res.status(500).json({ success: false, error: err.message });
@@ -79,7 +115,7 @@ const getUser = async (req, res) => {
             }
         })
         .catch((err) => {
-            console.log(err.message);
+            res.status(500).json({ success: false, error: err.message });
         });
 }
 
@@ -119,6 +155,7 @@ module.exports = {
     getAllUsers,
     postCustomer,
     postUser,
+    getUserIdByEmail,
     getUser,
     userLogin
 }

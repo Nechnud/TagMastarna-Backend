@@ -32,10 +32,7 @@ const getSeatsForJourney = async (req, res) => {
 
 const getAvailableSeats = async (req, res) => {
     if (
-        //!req.params.id || !req.body.startStationId || !req.body.endStationId ||
-        //!req.body.startStationDeparture || !req.body.endStationArrival
-        //!req.params.startStationDeparture || !req.params.endStationArrival ||
-        !req.params.id || !req.query.departure || !req.query.arrival
+        !req.params.id /* || !req.query.departure */ || !req.query.arrival
     ) {
         res.status(200).json({ success: false, error: 'Incorrect parameters' });
         return;
@@ -48,7 +45,7 @@ const getAvailableSeats = async (req, res) => {
                 WITH start_station_arrival AS(
                     SELECT station.id, station.arrival AS "startArrival", seat_id
                     FROM journey, station, ticket, booking
-                    WHERE station.id = ticket.startStartion_id 
+                    WHERE station.id = ticket.startStation_id 
                     AND journey.id = booking.journey_id
                     AND booking.id = ticket.booking_id
                     AND journey.id = ?
@@ -62,7 +59,7 @@ const getAvailableSeats = async (req, res) => {
                     AND journey.id = ?
                 ),
                 seats_booked AS(
-                    SELECT DISTINCT ticket.startStartion_id, ticket.endStation_id, ticket.departureTime,
+                    SELECT DISTINCT ticket.startStation_id, ticket.endStation_id, ticket.departureTime,
                         seat.id AS "seatId", start_station_arrival.startArrival, end_station_arrival.endArrival
                     FROM journey, booking, ticket, seat, station, start_station_arrival, end_station_arrival
                     WHERE journey.id = ?
@@ -72,8 +69,8 @@ const getAvailableSeats = async (req, res) => {
                     AND seat.id = start_station_arrival.seat_id
                     AND seat.id = end_station_arrival.seat_id
                     AND seat.id IN (ticket.seat_id, start_station_arrival.seat_id, end_station_arrival.seat_id)
-                    AND station.id IN (ticket.startStartion_id, ticket.endStation_id)
-                    AND start_station_arrival.id = ticket.startStartion_id
+                    AND station.id IN (ticket.startStation_id, ticket.endStation_id)
+                    AND start_station_arrival.id = ticket.startStation_id
                     AND end_station_arrival.id = ticket.endStation_id
                 ),
                 seats_free AS(
@@ -105,13 +102,6 @@ const getAvailableSeats = async (req, res) => {
             [
                 req.params.id, req.params.id,
                 req.params.id, req.params.id,
-                /* req.body.startStationDeparture,
-                req.body.endStationArrival,
-                req.body.startStationDeparture,
-                req.body.endStationArrival,
-                req.body.endStationArrival,
-                req.body.startStationDeparture,
-                req.body.endStationArrival, */
                 req.query.departure,
                 req.query.arrival,
                 req.query.departure,
