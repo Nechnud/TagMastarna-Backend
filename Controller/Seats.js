@@ -60,8 +60,11 @@ const getAvailableSeats = async (req, res) => {
                 ),
                 seats_booked AS(
                     SELECT DISTINCT ticket.startStation_id, ticket.endStation_id, ticket.departureTime,
-                        seat.id AS "seatId", start_station_arrival.startArrival, end_station_arrival.endArrival
-                    FROM journey, booking, ticket, seat, station, start_station_arrival, end_station_arrival
+                        carriage.id AS "seat_booked_carriageId", true AS seat_booked_bool,
+                        seat.id AS "booked_seatId", seat.seatNumber AS booked_seat_number, 
+                        start_station_arrival.startArrival, end_station_arrival.endArrival
+                    FROM journey, booking, ticket, carriage, seat, station, 
+                        start_station_arrival, end_station_arrival
                     WHERE journey.id = ?
                     AND journey.id = booking.journey_id
                     AND booking.id = ticket.booking_id
@@ -69,6 +72,7 @@ const getAvailableSeats = async (req, res) => {
                     AND seat.id = start_station_arrival.seat_id
                     AND seat.id = end_station_arrival.seat_id
                     AND seat.id IN (ticket.seat_id, start_station_arrival.seat_id, end_station_arrival.seat_id)
+                    AND carriage.id = seat.carriage_id
                     AND station.id IN (ticket.startStation_id, ticket.endStation_id)
                     AND start_station_arrival.id = ticket.startStation_id
                     AND end_station_arrival.id = ticket.endStation_id
@@ -84,7 +88,7 @@ const getAvailableSeats = async (req, res) => {
                     AND trainset.id = carriage.trainSet_id
                     AND carriage.id = seat.carriage_id
                     AND seat.id NOT IN(
-                        SELECT seatId
+                        SELECT booked_seatId
                         FROM seats_booked
                         WHERE startArrival <= ?
                         AND startArrival < ?
@@ -97,7 +101,13 @@ const getAvailableSeats = async (req, res) => {
                 )
                 SELECT *
                 FROM seats_free
-                ORDER BY seatId
+                LEFT OUTER JOIN seats_booked
+                ON seats_free.seatId = seats_booked.booked_seatId
+                UNION
+                SELECT *
+                FROM seats_free
+                RIGHT OUTER JOIN seats_booked
+                ON seats_free.seatId = seats_booked.booked_seatId
             `,
             [
                 req.params.id, req.params.id,
