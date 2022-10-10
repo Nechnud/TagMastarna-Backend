@@ -109,6 +109,58 @@
 			"response": []
 		},
 		{
+			"name": "GET user/:email",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/user/user/tjena.re@test.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"user",
+						"tjena.re@test.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST user/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"samcandy@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GET searchJourney/routes",
 			"request": {
 				"method": "GET",
@@ -124,6 +176,27 @@
 						"api",
 						"searchJourney",
 						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET searchJourney/stations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/searchJourney/stations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"searchJourney",
+						"stations"
 					]
 				}
 			},
@@ -212,6 +285,41 @@
 			"response": []
 		},
 		{
+			"name": "GET searchJourney/?startStation=<>&endStation=<>",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/searchJourney/?startStation=Lund C&endStation=Helsingborg C&date=2022-09-21",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"searchJourney",
+						""
+					],
+					"query": [
+						{
+							"key": "startStation",
+							"value": "Lund C"
+						},
+						{
+							"key": "endStation",
+							"value": "Helsingborg C"
+						},
+						{
+							"key": "date",
+							"value": "2022-09-21"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GET selectSeats/:id",
 			"request": {
 				"method": "GET",
@@ -233,12 +341,24 @@
 			"response": []
 		},
 		{
-			"name": "GET searchJourney/?startStation=<>&endStation=<>",
+			"name": "GET selectSeats/seats/:id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:4000/api/searchJourney/?startStation=Lund C&endStation=Helsingborg C",
+					"raw": "http://localhost:4000/api/selectSeats/seats/3127?departure=15&arrival=22",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -246,17 +366,18 @@
 					"port": "4000",
 					"path": [
 						"api",
-						"searchJourney",
-						""
+						"selectSeats",
+						"seats",
+						"3127"
 					],
 					"query": [
 						{
-							"key": "startStation",
-							"value": "Lund C"
+							"key": "departure",
+							"value": "15"
 						},
 						{
-							"key": "endStation",
-							"value": "Helsingborg C"
+							"key": "arrival",
+							"value": "22"
 						}
 					]
 				}
@@ -270,7 +391,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"customerId\": 1,\r\n    \"journeyId\": 3127,\r\n    \"cancellationProtection\": \"false\",\r\n    \"travelerName\": \"Sam Candy\",\r\n    \"travelerCategory\": \"Adult\",\r\n    \"seat_id\": 347,\r\n    \"departureTime\": \"2022-10-05 09:23:00\",\r\n    \"startStationId\": 58, \r\n    \"endStationId\": 60\r\n}",
+					"raw": "{\r\n    \"customerId\": 1,\r\n    \"journeyId\": 3127,\r\n    \"cancellationProtection\": \"false\",\r\n    \"departureTime\": \"2022-10-05 09:23:00\",\r\n    \"startStationId\": 58, \r\n    \"endStationId\": 60,\r\n    \"travelers\": [\r\n        {\r\n            \"travelerName\": \"Sam Candy\",\r\n            \"travelerCategory\": \"Adult\",\r\n            \"seatId\": 349\r\n        },\r\n        {\r\n            \"travelerName\": \"Willy Candy\",\r\n            \"travelerCategory\": \"Senior\",\r\n            \"seatId\": 350\r\n        },\r\n        {\r\n            \"travelerName\": \"Sam Candy Jr\",\r\n            \"travelerCategory\": \"Child\",\r\n            \"seatId\": 358\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
