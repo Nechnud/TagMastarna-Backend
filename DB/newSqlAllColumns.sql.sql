@@ -1,4 +1,7 @@
-create DATABASE TrainMasters;
+create DATABASE TrainMasters 
+CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+SET NAMES utf8mb4;
+SET CHARSET utf8mb4;
 
 use TrainMasters;
 
@@ -13,7 +16,7 @@ CREATE TABLE `Customer`(
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `phoneNumber` VARCHAR(255) NOT NULL,
-    `email` VARCHAR(255) NOT NULL
+    `email` VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE `Routes`(
@@ -57,7 +60,7 @@ CREATE TABLE `Journey`(
 
 CREATE TABLE `Ticket`(
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `travelerName` VARCHAR(255) NOT NULL,
+    `travelerName` VARCHAR(255),
     `travelerCategory` VARCHAR(255) NOT NULL,
     `booking_id` INT NOT NULL,
     `seat_id` INT NOT NULL,
@@ -101,7 +104,7 @@ ALTER TABLE
 ALTER TABLE
     `Ticket` ADD CONSTRAINT `ticket_seat_id_foreign` FOREIGN KEY(`seat_id`) REFERENCES `Seat`(`id`);
 ALTER TABLE
-    `Ticket` ADD CONSTRAINT `ticket_startstartion_id_foreign` FOREIGN KEY(`startStation_id`) REFERENCES `Station`(`id`);
+    `Ticket` ADD CONSTRAINT `ticket_startstation_id_foreign` FOREIGN KEY(`startStation_id`) REFERENCES `Station`(`id`);
 ALTER TABLE
     `Ticket` ADD CONSTRAINT `ticket_endstation_id_foreign` FOREIGN KEY(`endStation_id`) REFERENCES `Station`(`id`);
 

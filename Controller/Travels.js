@@ -6,7 +6,7 @@ const getRoutes = async (req, res) => {
         .query("SELECT * FROM Routes")
         .then(([rows, fields, err]) => {
             if (!err) {
-                return res.json(rows);
+                return res.json({ data: rows });
             }
             else {
                 return res.json({ msg: err.message });
@@ -26,7 +26,7 @@ const getAvailableJourneyDates = async (req, res) => {
         )
         .then(([rows, fields, err]) => {
             if (!err) {
-                return res.json(rows.map(x => x.dates));
+                return res.json({ success: true, data: rows.map(x => x.dates) });
             }
             else {
                 return res.json({ msg: err.message });
@@ -72,47 +72,43 @@ const getJourneysWithoutChangeRequired = async (req, res) => {
         res.status(500).json({ success: false, error: 'Incorrect parameters' });
         return;
     }
-    //journey.depFromFirstStationTime, (station.arrival - start_destination_data.departure)
-    //journey.depFromFirstStationTime, start_destination_data.departure
+    let date = req.query.date ? req.query.date : new Date().toISOString().split('T')[0];
 
     con
         .promise()
         .query(
             `
-                WITH start_destination_data AS (
+                WITH start_station_data AS (
                     SELECT id, route_id, arrival, departure, stationName
                     FROM station
                     WHERE stationName = ?
                 )
                 SELECT 
-                    station.id AS stationId, station.route_id, 
+                    station.id AS "endStationId", station.route_id, 
                         station.stationName AS "endDestination", 
                         station.arrival AS "endStationArrival", 
                     journey.id AS journeyId, journey.depFromFirstStationTime, journey.trainSet_id,
-                    start_destination_data.arrival AS "startStationArrival", 
-                        start_destination_data.departure AS "startStationDeparture",
-                        start_destination_data.stationName AS "startDestination",
-                    compute_journey_time(
-                        '2022-10-05 10:00', (station.arrival - start_destination_data.departure)
-                    ) AS "arrivalTime",
-                    compute_journey_time(
-                        '2022-10-05 11:00', start_destination_data.departure
-                    ) AS "departureTime"
-                FROM station, journey, start_destination_data
+                    start_station_data.id AS "startStationId",
+                        start_station_data.arrival AS "startStationArrival", 
+                        start_station_data.departure AS "startStationDeparture",
+                        start_station_data.stationName AS "startStation"
+                FROM station, journey, start_station_data
                 WHERE station.stationName = ?
-                AND station.arrival > start_destination_data.departure
+                AND station.arrival > start_station_data.departure
                 AND station.route_id IN (
                     SELECT route_id
-                    FROM start_destination_data
+                    FROM start_station_data
                 )
                 AND journey.route_id IN (
                     SELECT route_id
-                    FROM start_destination_data
+                    FROM start_station_data
                 )
-                AND start_destination_data.route_id = station.route_id
+                AND start_station_data.route_id = station.route_id
                 AND station.route_id = journey.route_id
+                AND DATE(journey.depFromFirstStationTime) = ?
+                ORDER BY journey.depFromFirstStationTime
             `,
-            [req.query.startStation, req.query.endStation]
+            [req.query.startStation, req.query.endStation, date]
         )
         .then(([rows, fields, err]) => {
             if (!err) {
