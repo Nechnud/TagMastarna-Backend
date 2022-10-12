@@ -81,7 +81,7 @@ const getAvailableSeats = async (req, res) => {
                     SELECT DISTINCT journey.id AS journeyId, journey.route_id,
                         seat.id AS "seatId", seat.seatNumber, seat.handicap, 
                         trainset.id AS trainsetId, 
-                        carriage.id AS carriageId
+                        carriage.id AS carriageId, carriage.carriageType
                     FROM journey, trainset, carriage, seat
                     WHERE journey.id = ?
                     AND trainset.id = journey.trainSet_id
