@@ -1,5 +1,5 @@
 const express = require("express");
-const user = require('./API/user');
+const user = require("./API/user");
 const searchJourney = require("./API/searchJourney.js");
 const selectSeats = require("./API/selectSeats.js");
 const booking = require("./API/booking.js");
