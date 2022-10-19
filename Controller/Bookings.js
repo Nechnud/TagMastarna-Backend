@@ -1,4 +1,5 @@
 const con = require('../db/Db');
+const Mailer = require('../Classes/Mailer');
 
 const postBookingAndTickets = async (req, res) => {
     if (
@@ -58,6 +59,30 @@ const postBookingAndTickets = async (req, res) => {
         });
 }
 
+const postConfirmationEmail = (req, res) => {
+    if (!req.body.email || !req.body.bookingInfo) {
+        res.status(500).json({ success: false, error: 'Incorrect parameters' });
+        return;
+    }
+
+    try {
+        let mailer = new Mailer();
+        let mailSentSuccessful = mailer.mail(req.body);
+        
+        if (!mailSentSuccessful) {
+            res.status(500).json({ success: false, error: 'Failed to send confirmation email' });
+        }
+        else {
+            res.status(200).json({ success: true, result: 'Booking confirmation email sent successfully' });
+        }
+    }
+    catch(err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+
+} 
+
 module.exports = {
-    postBookingAndTickets
+    postBookingAndTickets,
+    postConfirmationEmail
 }
