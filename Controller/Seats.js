@@ -124,7 +124,6 @@ const getAvailableSeats = async (req, res) => {
         .then(([rows, fields, err]) => {
             if (!err) {
                 data = {
-                    numOfFreeSeats: rows.length,
                     seats: rows
                 };
                 return res.json({ success: true, data: data });
