@@ -150,6 +150,37 @@ const userLogin = (req, res) => {
         });
 }
 
+const getBookingsByEmail = (req, res) => {
+    if (!req.params.email) {
+        res.status(500).json({ success: false, error: 'Incorrect params' });
+        return;
+    }
+
+    con
+        .promise()
+        .query(
+            `
+                SELECT *
+                FROM customer, booking, ticket
+                WHERE customer.id = booking.customer_id
+                AND booking.id = ticket.booking_id
+                AND customer.email = ? 
+            `,
+            [req.params.email]
+        )
+        .then(([rows, fields, err]) => {
+            if (!err) {
+                return res.json({ success: true, data: rows });
+            }
+            else {
+                return res.json({ success: false, error: err.message });
+            }
+        })
+        .catch((err) => {
+            res.status(500).json({ success: false, error: err.message });
+        });
+}
+
 
 module.exports = {
     getAllUsers,
@@ -157,5 +188,6 @@ module.exports = {
     postUser,
     getUserIdByEmail,
     getUser,
-    userLogin
+    userLogin,
+    getBookingsByEmail
 }
