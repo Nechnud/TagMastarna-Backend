@@ -5,7 +5,8 @@ const getSeatsForJourney = async (req, res) => {
         promise()
         .query(
             `
-                SELECT seat.id AS "seatId", trainset.id, depFromFirstStationTime, handicap, seatNumber 
+                SELECT seat.id AS "seatId", trainset.id, depFromFirstStationTime, handicap, seatNumber, 
+                    carriage.id AS carriageId
                 FROM journey
                 INNER JOIN trainset
                 ON journey.trainSet_id = trainset.id
@@ -101,13 +102,7 @@ const getAvailableSeats = async (req, res) => {
                 )
                 SELECT *
                 FROM seats_free
-                LEFT OUTER JOIN seats_booked
-                ON seats_free.seatId = seats_booked.booked_seatId
-                UNION
-                SELECT *
-                FROM seats_free
-                RIGHT OUTER JOIN seats_booked
-                ON seats_free.seatId = seats_booked.booked_seatId
+                ORDER BY seatId
             `,
             [
                 req.params.id, req.params.id,
