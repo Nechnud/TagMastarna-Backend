@@ -160,11 +160,26 @@ const getBookingsByEmail = (req, res) => {
         .promise()
         .query(
             `
+                WITH bookings AS(
+                    SELECT customer.name, customer.email, ticket.booking_id, ticket.travelerCategory,
+                        seat.seatNumber, carriage.id AS carriageId, station.stationName as startStation, 
+                        ticket.endStation_id, ticket.departureTime
+                    FROM customer, booking, ticket, seat, carriage, station
+                    WHERE customer.id = booking.customer_id
+                    AND booking.id = ticket.booking_id
+                    AND carriage.id = seat.carriage_id
+                    AND seat.id = ticket.seat_id
+                    AND ticket.startStation_id = station.id
+                    AND customer.email = ? 
+                ),
+                endStation AS (
+                    SELECT DISTINCT station.stationName AS endStation, station.id
+                    FROM station, bookings
+                    WHERE station.id = bookings.endStation_id
+                )
                 SELECT *
-                FROM customer, booking, ticket
-                WHERE customer.id = booking.customer_id
-                AND booking.id = ticket.booking_id
-                AND customer.email = ? 
+                FROM bookings, endStation
+                WHERE bookings.endStation_id = endStation.id
             `,
             [req.params.email]
         )
