@@ -32,9 +32,7 @@ const getSeatsForJourney = async (req, res) => {
 }
 
 const getAvailableSeats = async (req, res) => {
-    if (
-        !req.params.id /* || !req.query.departure */ || !req.query.arrival
-    ) {
+    if (!req.params.id) {
         res.status(200).json({ success: false, error: 'Incorrect parameters' });
         return;
     }
